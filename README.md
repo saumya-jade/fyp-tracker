@@ -3,7 +3,7 @@
 A web app that helps colleges manage final-year projects and internships in one place: team registration, automatic guide allocation, weekly progress tracking, document uploads, review scheduling, and final submissions.
 
 **Live demo:** https://fyp-tracker-zeta.vercel.app/
-**Built for:** [DevDevs]
+**Built for:** DevDevs
 
 ## Problem
 
@@ -95,4 +95,4 @@ src/
 
 ## Team
 
-[Saumya Jade,Siddhi Shahu,Girija Mahajan]
+Saumya Jade, Siddhi Shahu, Girija Mahajan
