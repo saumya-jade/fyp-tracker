@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Final-Year Project & Internship Tracker
+
+A web app that helps colleges manage final-year projects and internships in one place: team registration, automatic guide allocation, weekly progress tracking, document uploads, review scheduling, and final submissions.
+
+**Live demo:** https://fyp-tracker-zeta.vercel.app/
+**Built for:** [DevDevs]
+
+## Problem
+
+Coordinators track teams, guides, reviews, and documents across spreadsheets and WhatsApp groups. Students miss deadlines, guides get uneven loads, and nobody has a single view of project status.
+
+## Features
+
+- **Student portal:** register a team, add members, choose guide preferences, log weekly progress, upload documents
+- **Fair guide allocation:** deferred-acceptance matching based on team preferences, guide domains, and capacity, with a human-readable reason for every allocation
+- **Review scheduling:** coordinators create review sessions and assign time slots per team
+- **Coordinator dashboard:** live overview of all teams, progress, and final submission status
+- **Document storage:** reports and presentations stored in Supabase Storage
+
+## Tech Stack
+
+- Next.js (App Router) with TypeScript
+- Tailwind CSS
+- Supabase (PostgreSQL + Storage)
+- Deployed on Vercel
+
+## How Allocation Works
+
+Allocation uses a deferred-acceptance (Gale-Shapley style) algorithm:
+
+1. Each team ranks up to three preferred guides.
+2. Teams propose to their top choice first.
+3. A guide tentatively accepts teams up to remaining capacity (capacity minus existing load).
+4. If a guide is over capacity, the best-fitting teams are kept and the rest move to their next preference.
+5. The process repeats until all teams are placed or preferences are exhausted.
+6. Each result stores an `allocation_reason` explaining why the team got that guide.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A Supabase project
+
+### Setup
+
+```bash
+git clone https://github.com/saumya-jade/fyp-tracker.git
+cd fyp-tracker
+npm install
+```
+
+Create a `.env.local` file (see `.env.example`):
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tables: `teams`, `team_members`, `guides`, `progress_logs`, `documents`, `reviews`, `review_slots`, `final_submissions`.
+Create a Storage bucket named `documents` for file uploads.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/
+    page.tsx            Home
+    student/            Student portal
+    reviews/            Review schedule
+    coordinator/        Coordinator dashboard
+    allocate-test/      Guide allocation runner
+  components/           Navbar, Steps, SubmissionsTable
+  lib/
+    supabase.ts         Supabase client
+    allocate.ts         Allocation algorithm
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Limitations and Future Work
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Row Level Security is disabled for the hackathon demo; production needs authentication and RLS policies
+- Separate logins and roles for students, guides, and coordinators
+- Email or SMS reminders for upcoming reviews
+- Guide-side portal for feedback and marks
 
-## Deploy on Vercel
+## Team
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[Saumya Jade,Siddhi Shahu,Girija Mahajan]
